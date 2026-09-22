@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Know Me · Present</title>
+    <meta name="description" content="Help someone show up for you. A minute or two. No account needed." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #45441f;
+        --ink-on-marigold: #3a3a18;
+        --screen: #fdf8ee;
+        --blush: #f9bdb0;
+        --marigold: #fc9c51;
+        --butter: #fec67c;
+        --purple: #6e3b7d;
+        --grey2: #5f5c3e;
+        --grey3: #6b6845;
+        --grey4: #d8d3be;
+        --grey5: #ede8d9;
+        --grey6: #f7f3e7;
+        --white: #ffffff;
+        --display: "Fraunces", serif;
+        --serif: "EB Garamond", serif;
+        --ui: "Inter", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; background: var(--screen); color: var(--ink); }
+      body {
+        font-family: var(--ui);
+        padding: 12px 20px calc(24px + env(safe-area-inset-bottom));
+        max-width: 440px;
+        margin: 0 auto;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 48px;
+        margin-bottom: 18px;
+      }
+      .back {
+        width: 40px;
+        height: 40px;
+        border: 0;
+        border-radius: 104px;
+        background: var(--grey6);
+        color: var(--ink);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+      }
+      .back[hidden] { visibility: hidden; }
+      .wordmark {
+        font-family: var(--serif);
+        font-size: 28px;
+      }
+      .slot { width: 40px; }
+      .hero {
+        background: var(--blush);
+        border-radius: 32px;
+        padding: 26px 24px 22px;
+      }
+      .eyebrow {
+        font-family: var(--ui);
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        margin: 0 0 12px;
+      }
+      h1 {
+        font-family: var(--display);
+        font-size: 34px;
+        line-height: 36px;
+        letter-spacing: -1px;
+        font-weight: 700;
+        margin: 0 0 12px;
+      }
+      .support {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 22px;
+        line-height: 28px;
+        margin: 0;
+      }
+      .caption {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 20px;
+        line-height: 26px;
+        margin: 18px 0 0;
+      }
+      .card {
+        background: var(--white);
+        border: 1px solid var(--grey5);
+        border-radius: 24px;
+        padding: 22px;
+      }
+      .q-label {
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--purple);
+        margin: 0 0 12px;
+      }
+      .q-title {
+        font-family: var(--display);
+        font-size: 28px;
+        line-height: 30px;
+        margin: 0 0 10px;
+      }
+      .q-support {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 19px;
+        line-height: 24px;
+        color: var(--grey2);
+        margin: 0 0 16px;
+      }
+      label {
+        display: block;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--grey3);
+        margin: 0 0 6px;
+      }
+      input, textarea {
+        width: 100%;
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 18px;
+        color: var(--ink);
+        background: var(--white);
+        border: 1px solid var(--grey4);
+        border-radius: 20px;
+        min-height: 52px;
+        padding: 12px 18px;
+        margin-bottom: 12px;
+      }
+      textarea { min-height: 110px; resize: vertical; }
+      .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+      .chip {
+        border: 1px solid var(--grey4);
+        border-radius: 104px;
+        background: var(--white);
+        color: var(--ink);
+        font-family: var(--ui);
+        font-size: 16px;
+        padding: 11px 16px;
+        cursor: pointer;
+      }
+      .chip.on {
+        background: var(--butter);
+        border-color: var(--purple);
+        font-weight: 700;
+      }
+      .moment {
+        background: var(--grey6);
+        border-radius: 24px;
+        padding: 16px;
+        margin-top: 8px;
+      }
+      .moment strong { display: block; font-size: 17px; }
+      .moment span {
+        font-family: var(--serif);
+        font-style: italic;
+        color: var(--grey2);
+      }
+      .footer {
+        margin-top: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .btn {
+        appearance: none;
+        border: 0;
+        height: 56px;
+        border-radius: 104px;
+        background: var(--marigold);
+        color: var(--ink-on-marigold);
+        font-family: var(--ui);
+        font-weight: 700;
+        font-size: 18px;
+        cursor: pointer;
+        box-shadow: 0 2px 0 rgba(58, 58, 24, 0.1);
+      }
+      .btn.secondary {
+        background: var(--ink);
+        color: var(--white);
+        box-shadow: none;
+      }
+      .hidden { display: none; }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <button class="back" id="back" type="button" hidden>‹</button>
+      <div class="wordmark">Know Me</div>
+      <div class="slot"></div>
+    </header>
+
+    <main id="intro">
+      <section class="hero">
+        <p class="eyebrow">Present</p>
+        <h1 id="intro-title">Someone wants to show up for you.</h1>
+        <p class="support" id="intro-support">Help them know how. A minute or two. No account needed.</p>
+      </section>
+    </main>
+
+    <main id="question" class="hidden">
+      <section class="card">
+        <p class="q-label" id="q-label">Question 1/7</p>
+        <h2 class="q-title" id="q-title"></h2>
+        <p class="q-support hidden" id="q-support"></p>
+        <div id="q-body"></div>
+      </section>
+    </main>
+
+    <main id="thanks" class="hidden">
+      <section class="hero">
+        <p class="eyebrow">That’s it</p>
+        <h1 id="thanks-title">Thank you.</h1>
+        <p class="support" id="thanks-support">They’ll know how to show up for you.</p>
+      </section>
+      <p class="caption">No account. No follow-up. You can close this.</p>
+    </main>
+
+    <div class="footer" id="footer">
+      <button class="btn" id="primary" type="button">Start</button>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const from = params.get("from") || "Someone";
+      const recipient = params.get("for") || "";
+      const pronoun = params.get("p") || "they";
+      const token = params.get("token") || "";
+      const object = pronoun === "she" ? "her" : pronoun === "he" ? "him" : "them";
+
+      const answers = {
+        goToDrinkOrder: "",
+        favoriteTreat: "",
+        wishlistUrl: "",
+        loveLanguage: "",
+        hardDayNotes: "",
+        birthday: "",
+        upcomingMoments: [],
+      };
+      const momentDraft = { label: "", date: "", recurring: false, notes: "" };
+
+      let step = -1;
+      const total = 7;
+
+      const intro = document.getElementById("intro");
+      const question = document.getElementById("question");
+      const thanks = document.getElementById("thanks");
+      const footer = document.getElementById("footer");
+      const primary = document.getElementById("primary");
+      const back = document.getElementById("back");
+
+      document.getElementById("intro-title").textContent = from + " wants to show up for you.";
+      document.getElementById("intro-support").textContent =
+        "Help " + object + " know how. A minute or two. No account needed.";
+      document.getElementById("thanks-title").textContent = recipient
+        ? "Thank you, " + recipient + "."
+        : "Thank you.";
+      document.getElementById("thanks-support").textContent =
+        from + " will know how to show up for you.";
+
+      function field(id, label, placeholder, multiline) {
+        const wrap = document.createElement("div");
+        const lab = document.createElement("label");
+        lab.textContent = label;
+        const input = document.createElement(multiline ? "textarea" : "input");
+        input.id = id;
+        input.placeholder = placeholder;
+        if (!multiline) input.type = id === "wishlistUrl" ? "url" : "text";
+        input.value = id in momentDraft ? momentDraft[id] || "" : answers[id] || "";
+        input.addEventListener("input", () => {
+          if (id in momentDraft && ["label", "date", "notes"].includes(id)) {
+            momentDraft[id] = input.value;
+          } else {
+            answers[id] = input.value;
+          }
+        });
+        wrap.append(lab, input);
+        return wrap;
+      }
+
+      function renderQuestion() {
+        const n = step + 1;
+        document.getElementById("q-label").textContent = "Question " + n + "/" + total;
+        const body = document.getElementById("q-body");
+        const support = document.getElementById("q-support");
+        body.innerHTML = "";
+        support.classList.add("hidden");
+        support.textContent = "";
+
+        const title = document.getElementById("q-title");
+        if (step === 0) {
+          title.textContent = "What’s your go-to drink order?";
+          body.append(field("goToDrinkOrder", "Go-to drink", "Coffee, tea, dirty soda, matcha..."));
+        } else if (step === 1) {
+          title.textContent = "What’s your favorite treat?";
+          body.append(field("favoriteTreat", "Favorite treat", "Chocolate, pastry, fries, a cookie..."));
+        } else if (step === 2) {
+          title.textContent = "Got a wishlist? Paste the link.";
+          support.textContent = "Optional. Skip if you don’t have one.";
+          support.classList.remove("hidden");
+          body.append(field("wishlistUrl", "Wishlist link", "Amazon, Etsy, Target — whatever you use"));
+        } else if (step === 3) {
+          title.textContent = "How do you like to be shown up for?";
+          support.textContent = "Words. Acts. Gifts. Time. Touch.";
+          support.classList.remove("hidden");
+          const chips = document.createElement("div");
+          chips.className = "chips";
+          ["words", "acts", "gifts", "time", "touch"].forEach((id) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "chip" + (answers.loveLanguage === id ? " on" : "");
+            btn.textContent = id[0].toUpperCase() + id.slice(1);
+            btn.addEventListener("click", () => {
+              answers.loveLanguage = id;
+              renderQuestion();
+              updatePrimary();
+            });
+            chips.append(btn);
+          });
+          body.append(chips);
+        } else if (step === 4) {
+          title.textContent = "When it’s a hard day, how can someone show up?";
+          body.append(field("hardDayNotes", "Hard day", "A coffee, a short text, dinner dropped off...", true));
+        } else if (step === 5) {
+          title.textContent = "When’s your birthday?";
+          body.append(field("birthday", "Birthday", "August 14"));
+        } else if (step === 6) {
+          title.textContent = "Any dates coming up?";
+          support.textContent = "A race, due date, graduation — or skip.";
+          support.classList.remove("hidden");
+          body.append(field("label", "What is it?", "Graduation, race day, new job..."));
+          body.append(field("date", "When is it?", "2026-09-01"));
+          const hint = document.createElement("label");
+          hint.textContent = "Just this once or every year?";
+          body.append(hint);
+          const chips = document.createElement("div");
+          chips.className = "chips";
+          [
+            ["once", "Just once", false],
+            ["year", "Every year", true],
+          ].forEach(([key, label, value]) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "chip" + (momentDraft.recurring === value ? " on" : "");
+            btn.textContent = label;
+            btn.addEventListener("click", () => {
+              momentDraft.recurring = value;
+              renderQuestion();
+            });
+            chips.append(btn);
+          });
+          body.append(chips);
+          body.append(field("notes", "Anything to remember", "", true));
+          const add = document.createElement("button");
+          add.type = "button";
+          add.className = "btn secondary";
+          add.textContent = "Add date";
+          add.addEventListener("click", () => {
+            if (!momentDraft.label.trim() || !momentDraft.date.trim()) return;
+            answers.upcomingMoments.push({ ...momentDraft });
+            momentDraft.label = "";
+            momentDraft.date = "";
+            momentDraft.notes = "";
+            momentDraft.recurring = false;
+            renderQuestion();
+          });
+          body.append(add);
+          answers.upcomingMoments.forEach((moment) => {
+            const row = document.createElement("div");
+            row.className = "moment";
+            row.innerHTML =
+              "<strong></strong><span></span>";
+            row.querySelector("strong").textContent = moment.label;
+            row.querySelector("span").textContent =
+              moment.date + " · " + (moment.recurring ? "Every year" : "Just once");
+            body.append(row);
+          });
+        }
+        updatePrimary();
+      }
+
+      function updatePrimary() {
+        if (step === -1) primary.textContent = "Start";
+        else if (step === total - 1) primary.textContent = "Finish";
+        else if ((step === 2 && !answers.wishlistUrl.trim()) || (step === 3 && !answers.loveLanguage))
+          primary.textContent = "Skip";
+        else primary.textContent = "Next";
+      }
+
+      function show() {
+        intro.classList.toggle("hidden", step !== -1);
+        question.classList.toggle("hidden", step < 0 || step >= total);
+        thanks.classList.toggle("hidden", step < total);
+        footer.classList.toggle("hidden", step >= total);
+        back.hidden = step < 0;
+        if (step >= 0 && step < total) renderQuestion();
+        else updatePrimary();
+      }
+
+      back.addEventListener("click", () => {
+        if (step < 0) return;
+        step -= 1;
+        show();
+      });
+
+      primary.addEventListener("click", () => {
+        if (step === total - 1) {
+          try {
+            localStorage.setItem(
+              "present.knowme." + (token || "draft"),
+              JSON.stringify({ token, from, recipient, answers, completedAt: new Date().toISOString() }),
+            );
+          } catch (e) {}
+          step = total;
+          show();
+          return;
+        }
+        step += 1;
+        show();
+      });
+
+      show();
+    </script>
+  </body>
+</html>
