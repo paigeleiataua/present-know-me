@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Know Me · Present</title>
     <meta name="description" content="Help someone show up for you. A minute or two. No account needed." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Know Me · Present" />
+    <meta property="og:description" content="Help someone show up for you. A minute or two. No account needed." />
+    <meta property="og:url" content="https://paigeleiataua.github.io/present-know-me/" />
+    <meta property="og:image" content="https://paigeleiataua.github.io/present-know-me/og.png" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="720" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Know Me · Present" />
+    <meta name="twitter:description" content="Help someone show up for you. A minute or two. No account needed." />
+    <meta name="twitter:image" content="https://paigeleiataua.github.io/present-know-me/og.png" />
+    <link rel="apple-touch-icon" href="og.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -242,10 +254,18 @@
 
     <script>
       const params = new URLSearchParams(location.search);
-      const from = params.get("from") || "Someone";
-      const recipient = params.get("for") || "";
-      const pronoun = params.get("p") || "they";
-      const token = params.get("token") || "";
+      const hash = decodeURIComponent((location.hash || "").replace(/^#/, ""));
+      const parts = hash ? hash.split("~") : [];
+      const shortPronoun = (value) => {
+        const key = (value || "they").toLowerCase();
+        if (key === "s" || key.startsWith("she")) return "she";
+        if (key === "h" || key.startsWith("he")) return "he";
+        return "they";
+      };
+      const from = parts[0] || params.get("from") || "Someone";
+      const recipient = parts[1] || params.get("for") || "";
+      const pronoun = shortPronoun(parts[2] || params.get("p"));
+      const token = parts[3] || params.get("token") || "";
       const object = pronoun === "she" ? "her" : pronoun === "he" ? "him" : "them";
 
       const answers = {
