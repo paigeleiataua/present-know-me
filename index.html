@@ -279,7 +279,7 @@
         goToDrinkOrder: "",
         favoriteTreat: "",
         wishlistUrl: "",
-        loveLanguage: "",
+        loveLanguage: [],
         hardDayNotes: "",
         birthday: "",
         upcomingMoments: [],
@@ -348,17 +348,19 @@
           body.append(field("wishlistUrl", "Wishlist link", "Amazon, Etsy, Target — whatever you use"));
         } else if (step === 3) {
           title.textContent = "How do you like to be shown up for?";
-          support.textContent = "Words. Acts. Gifts. Time. Touch.";
+          support.textContent = "Pick any that fit.";
           support.classList.remove("hidden");
           const chips = document.createElement("div");
           chips.className = "chips";
           ["words", "acts", "gifts", "time", "touch"].forEach((id) => {
             const btn = document.createElement("button");
             btn.type = "button";
-            btn.className = "chip" + (answers.loveLanguage === id ? " on" : "");
+            btn.className = "chip" + (answers.loveLanguage.includes(id) ? " on" : "");
             btn.textContent = id[0].toUpperCase() + id.slice(1);
             btn.addEventListener("click", () => {
-              answers.loveLanguage = id;
+              const index = answers.loveLanguage.indexOf(id);
+              if (index === -1) answers.loveLanguage.push(id);
+              else answers.loveLanguage.splice(index, 1);
               renderQuestion();
               updatePrimary();
             });
@@ -429,7 +431,7 @@
       function updatePrimary() {
         if (step === -1) primary.textContent = "Start";
         else if (step === total - 1) primary.textContent = "Finish";
-        else if ((step === 2 && !answers.wishlistUrl.trim()) || (step === 3 && !answers.loveLanguage))
+        else if ((step === 2 && !answers.wishlistUrl.trim()) || (step === 3 && !answers.loveLanguage.length))
           primary.textContent = "Skip";
         else primary.textContent = "Next";
       }
@@ -483,7 +485,7 @@
                     hardDayNotes: answers.hardDayNotes || "",
                     birthday: answers.birthday || "",
                     wishlistUrl: answers.wishlistUrl || "",
-                    loveLanguage: answers.loveLanguage || "",
+                    loveLanguage: answers.loveLanguage,
                     upcomingMoments: Array.isArray(answers.upcomingMoments) ? answers.upcomingMoments : [],
                   },
                 }),
