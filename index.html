@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Fraunces:opsz,wght,SOFT,WONK@9..144,700,0,0&family=Inter:wght@500;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -46,7 +46,12 @@
       html, body { margin: 0; min-height: 100%; background: var(--screen); color: var(--ink); }
       body {
         font-family: var(--ui);
-        padding: 12px 20px calc(24px + env(safe-area-inset-bottom));
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: safe center;
+        gap: 22px;
+        padding: max(28px, env(safe-area-inset-top)) 24px max(28px, env(safe-area-inset-bottom));
         max-width: 440px;
         margin: 0 auto;
       }
@@ -55,7 +60,6 @@
         align-items: center;
         justify-content: space-between;
         min-height: 48px;
-        margin-bottom: 18px;
       }
       .back {
         width: 40px;
@@ -87,12 +91,15 @@
         text-transform: uppercase;
         margin: 0 0 12px;
       }
-      h1 {
+      h1, .q-title {
         font-family: var(--display);
-        font-size: 34px;
-        line-height: 36px;
-        letter-spacing: -1px;
         font-weight: 700;
+        font-variation-settings: "SOFT" 0, "WONK" 0, "opsz" 144;
+      }
+      h1 {
+        font-size: 34px;
+        line-height: 42px;
+        letter-spacing: -0.4px;
         margin: 0 0 12px;
       }
       .support {
@@ -107,7 +114,7 @@
         font-style: italic;
         font-size: 20px;
         line-height: 26px;
-        margin: 18px 0 0;
+        margin: 0;
       }
       .card {
         background: var(--white);
@@ -124,9 +131,9 @@
         margin: 0 0 12px;
       }
       .q-title {
-        font-family: var(--display);
         font-size: 28px;
-        line-height: 30px;
+        line-height: 36px;
+        letter-spacing: -0.3px;
         margin: 0 0 10px;
       }
       .q-support {
@@ -189,7 +196,6 @@
         color: var(--grey2);
       }
       .footer {
-        margin-top: 18px;
         display: flex;
         flex-direction: column;
         gap: 12px;
@@ -212,7 +218,7 @@
         color: var(--white);
         box-shadow: none;
       }
-      .hidden { display: none; }
+      .hidden { display: none !important; }
     </style>
   </head>
   <body>
