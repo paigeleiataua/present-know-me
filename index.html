@@ -340,15 +340,13 @@
         const title = document.getElementById("q-title");
         if (step === 0) {
           title.textContent = "What’s your go-to drink order?";
-          body.append(field("goToDrinkOrder", "Go-to drink", "Coffee, tea, dirty soda, matcha..."));
+          body.append(field("goToDrinkOrder", "", "Coffee, tea, dirty soda, matcha..."));
         } else if (step === 1) {
           title.textContent = "What’s your favorite treat?";
-          body.append(field("favoriteTreat", "Favorite treat", "Chocolate, pastry, fries, a cookie..."));
+          body.append(field("favoriteTreat", "", "Chocolate, pastry, fries, a cookie..."));
         } else if (step === 2) {
           title.textContent = "Got a wishlist? Paste the link.";
-          support.textContent = "Optional. Skip if you don’t have one.";
-          support.classList.remove("hidden");
-          body.append(field("wishlistUrl", "Wishlist link", "Amazon, Etsy, Target — whatever you use"));
+          body.append(field("wishlistUrl", "", "Amazon, Etsy, Target — whatever you use"));
         } else if (step === 3) {
           title.textContent = "How do you like to be shown up for?";
           const chips = document.createElement("div");
@@ -376,8 +374,6 @@
           body.append(field("birthday", "", "August 14"));
         } else if (step === 6) {
           title.textContent = "Any dates coming up?";
-          support.textContent = "A race, due date, graduation — or skip.";
-          support.classList.remove("hidden");
           body.append(field("label", "What is it?", "Graduation, race day, new job..."));
           body.append(field("date", "When is it?", "2026-09-01"));
           const hint = document.createElement("label");
