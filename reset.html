@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Choose a new password · Present</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=Fraunces:opsz,wght,SOFT,WONK@9..144,700,0,0&family=Inter:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #45441f;
+        --ink-on-marigold: #3a3a18;
+        --screen: #fdf8ee;
+        --marigold: #fc9c51;
+        --grey3: #6b6845;
+        --grey4: #d8d3be;
+        --white: #ffffff;
+        --danger: #b7615e;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 28px 24px;
+        background: var(--screen);
+        color: var(--ink);
+        font-family: Inter, sans-serif;
+      }
+      main { width: 100%; max-width: 420px; }
+      .eyebrow {
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        margin: 0 0 8px;
+      }
+      h1 {
+        font-family: Fraunces, serif;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 42px;
+        letter-spacing: -0.4px;
+        font-variation-settings: "SOFT" 0, "WONK" 0, "opsz" 144;
+        margin: 0 0 18px;
+      }
+      .card {
+        background: var(--white);
+        border-radius: 24px;
+        padding: 22px;
+      }
+      label {
+        display: block;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--grey3);
+        margin: 0 0 6px;
+      }
+      input {
+        width: 100%;
+        font-family: "EB Garamond", serif;
+        font-style: italic;
+        font-size: 18px;
+        color: var(--ink);
+        background: var(--white);
+        border: 1px solid var(--grey4);
+        border-radius: 20px;
+        min-height: 52px;
+        padding: 12px 18px;
+        margin-bottom: 14px;
+      }
+      button {
+        width: 100%;
+        height: 56px;
+        border: 0;
+        border-radius: 104px;
+        background: var(--marigold);
+        color: var(--ink-on-marigold);
+        font-family: Inter, sans-serif;
+        font-weight: 700;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      button:disabled { opacity: 0.4; }
+      .message { margin: 0; font-size: 16px; line-height: 24px; }
+      .error { color: var(--danger); margin: 0 0 12px; }
+      .hidden { display: none; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">Present</p>
+      <h1 id="title">Choose a new password.</h1>
+      <section class="card">
+        <form id="form">
+          <label for="password">New password</label>
+          <input id="password" type="password" placeholder="At least 6 characters" autocomplete="new-password" />
+          <p class="error hidden" id="error"></p>
+          <button id="save" type="submit">Save password</button>
+        </form>
+        <p class="message hidden" id="done">Password saved. Go back to Present and sign in with it.</p>
+      </section>
+    </main>
+    <script src="config.js"></script>
+    <script>
+      const params = new URLSearchParams(location.hash.replace(/^#/, ""));
+      const search = new URLSearchParams(location.search);
+      const accessToken = params.get("access_token") || search.get("access_token");
+      const linkError = params.get("error_description") || search.get("error_description");
+      const form = document.getElementById("form");
+      const error = document.getElementById("error");
+      const done = document.getElementById("done");
+      const title = document.getElementById("title");
+
+      const showError = (message) => {
+        error.textContent = message;
+        error.classList.remove("hidden");
+      };
+
+      if (linkError) {
+        form.classList.add("hidden");
+        title.textContent = "That link didn't open.";
+        showError(decodeURIComponent(linkError.replace(/\+/g, " ")));
+      } else if (!accessToken) {
+        form.classList.add("hidden");
+        title.textContent = "Ask for a new link.";
+        showError("This page needs the link from your email. Request another one in Present.");
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const password = document.getElementById("password").value;
+        if (password.length < 6) {
+          showError("Use at least 6 characters.");
+          return;
+        }
+        const base = String(window.PRESENT_SUPABASE_URL || "").replace(/\/$/, "");
+        const key = window.PRESENT_SUPABASE_ANON_KEY || "";
+        const button = document.getElementById("save");
+        button.disabled = true;
+        error.classList.add("hidden");
+        try {
+          const response = await fetch(base + "/auth/v1/user", {
+            method: "PUT",
+            headers: {
+              apikey: key,
+              Authorization: "Bearer " + accessToken,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ password }),
+          });
+          if (!response.ok) {
+            const body = await response.json().catch(() => ({}));
+            showError(body.msg || body.error_description || body.message || "Couldn't save that password. Ask for a new link.");
+            button.disabled = false;
+            return;
+          }
+          form.classList.add("hidden");
+          title.textContent = "You're set.";
+          done.classList.remove("hidden");
+        } catch (caught) {
+          showError("Couldn't save that password. Ask for a new link.");
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
