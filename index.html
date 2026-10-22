@@ -307,8 +307,6 @@
 
       function field(id, label, placeholder, multiline) {
         const wrap = document.createElement("div");
-        const lab = document.createElement("label");
-        lab.textContent = label;
         const input = document.createElement(multiline ? "textarea" : "input");
         input.id = id;
         input.placeholder = placeholder;
@@ -321,7 +319,12 @@
             answers[id] = input.value;
           }
         });
-        wrap.append(lab, input);
+        if (label) {
+          const lab = document.createElement("label");
+          lab.textContent = label;
+          wrap.append(lab);
+        }
+        wrap.append(input);
         return wrap;
       }
 
@@ -348,8 +351,6 @@
           body.append(field("wishlistUrl", "Wishlist link", "Amazon, Etsy, Target — whatever you use"));
         } else if (step === 3) {
           title.textContent = "How do you like to be shown up for?";
-          support.textContent = "Pick any that fit.";
-          support.classList.remove("hidden");
           const chips = document.createElement("div");
           chips.className = "chips";
           ["words", "acts", "gifts", "time", "touch"].forEach((id) => {
@@ -369,10 +370,10 @@
           body.append(chips);
         } else if (step === 4) {
           title.textContent = "When it’s a hard day, how can someone show up?";
-          body.append(field("hardDayNotes", "Hard day", "A coffee, a short text, dinner dropped off...", true));
+          body.append(field("hardDayNotes", "", "A coffee, a short text, dinner dropped off...", true));
         } else if (step === 5) {
           title.textContent = "When’s your birthday?";
-          body.append(field("birthday", "Birthday", "August 14"));
+          body.append(field("birthday", "", "August 14"));
         } else if (step === 6) {
           title.textContent = "Any dates coming up?";
           support.textContent = "A race, due date, graduation — or skip.";
@@ -431,8 +432,7 @@
       function updatePrimary() {
         if (step === -1) primary.textContent = "Start";
         else if (step === total - 1) primary.textContent = "Finish";
-        else if ((step === 2 && !answers.wishlistUrl.trim()) || (step === 3 && !answers.loveLanguage.length))
-          primary.textContent = "Skip";
+        else if (step === 2 && !answers.wishlistUrl.trim()) primary.textContent = "Skip";
         else primary.textContent = "Next";
       }
 
